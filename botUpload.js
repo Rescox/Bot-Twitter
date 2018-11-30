@@ -5,10 +5,10 @@ var fs = require('fs');
 var dir = './Imagenes';
 
 var T = new Twit({
-    consumer_key:         'FCVYt7lC1jlFTt8s0HxU0K4g3',
-    consumer_secret:      'Tt2MUUSMd9hP75AMUqWLziqrNRngjWB9y4Na7HhhuZRD3d2ibI',
-    access_token:         '1063814327587799041-6rmZ9wMrhMD5cWcSAd0ANMgsV2ZPGl',
-    access_token_secret:  'b8sxtICZo2D3XyTE5KrQx0Y9soVRrfXnWg81fuGG9nSVa',
+    consumer_key:         '',
+    consumer_secret:      '',
+    access_token:         '',
+    access_token_secret:  '',
     timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
     strictSSL:            true,     // optional - requires SSL certificates to be valid.
   })
