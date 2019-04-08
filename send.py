@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import pika
 import tweepy
+import time
 
 
 def twitter_api():
@@ -12,7 +13,7 @@ def twitter_api():
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
     api = tweepy.API(auth, wait_on_rate_limit=True)
-    print("hola")
+    print("Conectando a twitter")
     return api
 
 
@@ -29,19 +30,30 @@ def store_last_seen_id(last_id):
     f_write.close()
 
 
-api = twitter_api()
-connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
-channel = connection.channel()
+def reply_to_tweets():
+    try:
+        api = twitter_api()
+        connection = pika.BlockingConnection(
+            pika.ConnectionParameters(host="localhost")
+        )
+        channel = connection.channel()
+        print("Escribiendo replies...", flush=True)
+        last_id = return_last_id()
+        mentions = api.mentions_timeline(last_id)
+        channel.queue_declare(queue="hello")
+        print(mentions)
+        for mention in mentions:
+            time.sleep(1)
+            channel.basic_publish(
+                exchange="", routing_key="hello", body=str(mention.id)
+            )
+            print(str(mention.id) + " - " + mention.text, flush=True)
+            last_seen_id = mention.id
+            store_last_seen_id(last_seen_id)
 
-last_id = return_last_id()
-mentions = api.mentions_timeline(last_id)
-mentions = mentions[1:]
-channel.queue_declare(queue="hello")
-for mention in mentions:
-    print(mention.text)
-    channel.basic_publish(exchange="", routing_key="hello", body=mention.text)
-    print(" [x] Sent 'Hello World!'")
-    last_seen_id = mention.id
-    print(last_seen_id)
-    store_last_seen_id(last_seen_id)
-connection.close
+    except tweepy.error.TweepError:
+        print("asdasdasd")
+    connection.close
+
+
+reply_to_tweets()

@@ -25,11 +25,8 @@ channel.queue_declare(queue="hello")
 
 def get_Solution(mention, api):
     # Sacamos el id de la pregunta y el texto del tweet al que se refiere
-    print("El texto del tweet: " + mention.text)
-    print("se refiere al tweet escrito en")
-    print(mention.in_reply_to_status_id)
+    print("El texto del tweet: " + mention)
     # Devuelve el status (cosas del tweet)de un tweet
-    tweet = api.get_status(mention.in_reply_to_status_id)
     aPregunta = tweet.text.split("-")  # Imprime el texto
     sPregunta = aPregunta[0]
     # Buscamos ahora en el .txt la solucion.
@@ -42,15 +39,19 @@ def get_Solution(mention, api):
         respuesta = i.split("-")
         if respuesta[0] == sPregunta:
             Solucion = respuesta[1]
-
     return Solucion
 
 
 def callback(ch, method, properties, body):
-    # api = twitter_api()
-    # api.update_status('Respuesta correcta1ssd')
-    # if str(get_Solution(body))in body.text.lower():
-
+    api = twitter_api()
+    tweet = api.get_status(int(body))
+    print(tweet)
+    # if str(get_Solution(body)) in body.text.lower():
+    # print("Solución encontrada", flush=True)
+    # print("Respondiendo...", flush=True)
+    # api.update_status(
+    #    "@" + mention.user.screen_name + "¡Respuesta correcta!", mention.id
+    # )
     print(" [x] Received %r" % body)
 
 
