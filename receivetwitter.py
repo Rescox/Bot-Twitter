@@ -45,7 +45,8 @@ def get_Solution(mention, api):
 def callback(ch, method, properties, body):
     api = twitter_api()
     tweet = api.get_status(int(body))
-    print(tweet)
+    print(tweet.text)
+    
     # if str(get_Solution(body)) in body.text.lower():
     # print("Solución encontrada", flush=True)
     # print("Respondiendo...", flush=True)
