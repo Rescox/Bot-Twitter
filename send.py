@@ -5,10 +5,9 @@ import time
 
 
 def twitter_api():
-    CONSUMER_KEY = "FCVYt7lC1jlFTt8s0HxU0K4g3"
-    CONSUMER_SECRET = "Tt2MUUSMd9hP75AMUqWLziqrNRngjWB9y4Na7HhhuZRD3d2ibI"
-    ACCESS_KEY = "1063814327587799041-6rmZ9wMrhMD5cWcSAd0ANMgsV2ZPGl"
-    ACCESS_SECRET = "b8sxtICZo2D3XyTE5KrQx0Y9soVRrfXnWg81fuGG9nSVa"
+    CONSUMER_KEY = ""
+    CONSUMER_SECRET = ""
+    ACCESS_KEY = "-"
 
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
