@@ -5,9 +5,10 @@ import time
 
 
 def twitter_api():
-    CONSUMER_KEY = ""
-    CONSUMER_SECRET = ""
-    ACCESS_KEY = "-"
+    CONSUMER_KEY = "FCVYt7lC1jlFTt8s0HxU0K4g3"
+    CONSUMER_SECRET = "Tt2MUUSMd9hP75AMUqWLziqrNRngjWB9y4Na7HhhuZRD3d2ibI"
+    ACCESS_KEY = "1063814327587799041-6rmZ9wMrhMD5cWcSAd0ANMgsV2ZPGl"
+    ACCESS_SECRET = "b8sxtICZo2D3XyTE5KrQx0Y9soVRrfXnWg81fuGG9nSVa"
 
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
@@ -37,18 +38,17 @@ def reply_to_tweets():
         )
         channel = connection.channel()
         print("Escribiendo replies...", flush=True)
-        last_id = return_last_id()
-        mentions = api.mentions_timeline(last_id)
+        last_seen_id = return_last_id()
+        mentions = api.mentions_timeline(last_seen_id)
         channel.queue_declare(queue="hello")
-        print(mentions)
         for mention in mentions:
+            last_seen_id = mention.id
             time.sleep(1)
             channel.basic_publish(
                 exchange="", routing_key="hello", body=str(mention.id)
             )
             print(str(mention.id) + " - " + mention.text, flush=True)
-            last_seen_id = mention.id
-            store_last_seen_id(last_seen_id)
+        store_last_seen_id(last_seen_id)
 
     except tweepy.error.TweepError:
         print("asdasdasd")
